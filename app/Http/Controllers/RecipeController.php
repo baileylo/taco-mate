@@ -8,16 +8,6 @@ use Illuminate\Http\Request;
 class RecipeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -66,6 +56,8 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
+        $this->authorize('update', $recipe);
+
         return view('recipes.edit', compact('recipe'));
     }
 
@@ -78,6 +70,8 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
+        $this->authorize('update', $recipe);
+
         $this->validate($request, [
             'title' => 'required|between:5,255',
             'ingredients' => 'required|min:5',
@@ -97,6 +91,8 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
+        $this->authorize('destroy', $recipe);
+
         $recipe->delete();
 
         return [
